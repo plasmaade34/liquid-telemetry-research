@@ -110,6 +110,17 @@ with `python accuracy_validation.py` (`run_multi_seed_validation`).
   `python tests/run_vectors.py`, and
   `g++ -std=c++17 -O2 -o run_vectors_cpp tests/run_vectors.cpp && ./run_vectors_cpp`
   (all from the repo root) — all three currently report 24/24.
+- **`substrate_optimization_simulation.py`** — separate from the telemetry
+  question: sizes vessel wall thickness for 304 Stainless Steel, 6061-T6
+  Aluminum, and Titanium Grade 5 under external pressure, using Barlow's
+  Formula and Timoshenko's elastic buckling equation.
+- **`material_efficiency_index.py`** — derives and validates the actual
+  material indices for minimum-mass vessel design (`sigma_y/rho` for
+  yield-limited walls, `E^(1/3)/rho` for buckling-limited walls), tested
+  against the simulation above rather than asserted. See
+  `STRUCTURAL_FRAMEWORK_NOTES.md` for the full write-up, including what
+  this replaced (an undefined "universal" coefficient from an earlier
+  draft) and where the indices do and don't apply.
 
 ## Known limitations
 
