@@ -1,0 +1,427 @@
+[
+  {
+    "name": "normal_mid_body_reading",
+    "input": {
+      "rawLaserDistanceMm": 50,
+      "tLiquid": 4,
+      "tLid": 45,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0.01244,
+      "sloshMultiplier": 1,
+      "sampleCount": 1,
+      "volumeMl": 599.4,
+      "volumeFlOz": 20.27
+    }
+  },
+  {
+    "name": "default_args_only",
+    "input": {
+      "rawLaserDistanceMm": 50
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0.01244,
+      "sloshMultiplier": 1,
+      "sampleCount": 1,
+      "volumeMl": 599.4,
+      "volumeFlOz": 20.27
+    }
+  },
+  {
+    "name": "empty_vessel_far_reading",
+    "input": {
+      "rawLaserDistanceMm": 500,
+      "tLiquid": 4,
+      "tLid": 45,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0.01244,
+      "sloshMultiplier": 1,
+      "sampleCount": 1,
+      "volumeMl": 0,
+      "volumeFlOz": 0
+    }
+  },
+  {
+    "name": "reading_exactly_at_shoulder_boundary",
+    "input": {
+      "rawLaserDistanceMm": 40,
+      "tLiquid": 20,
+      "tLid": 20,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0,
+      "sloshMultiplier": 1,
+      "sampleCount": 1,
+      "volumeMl": 634.6,
+      "volumeFlOz": 21.46
+    }
+  },
+  {
+    "name": "reading_in_neck_zone",
+    "input": {
+      "rawLaserDistanceMm": 10,
+      "tLiquid": 20,
+      "tLid": 20,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0,
+      "sloshMultiplier": 1,
+      "sampleCount": 1,
+      "volumeMl": 693.5,
+      "volumeFlOz": 23.45
+    }
+  },
+  {
+    "name": "negative_raw_distance_height_clamped",
+    "input": {
+      "rawLaserDistanceMm": -500,
+      "tLiquid": 4,
+      "tLid": 45,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_READING_CLAMPED",
+      "thermalWarpMm": 0.01244,
+      "sloshMultiplier": 1,
+      "sampleCount": 1,
+      "volumeMl": 710,
+      "volumeFlOz": 24.01
+    }
+  },
+  {
+    "name": "capacity_clamped_near_full",
+    "input": {
+      "rawLaserDistanceMm": 0.01,
+      "tLiquid": 4,
+      "tLid": 45,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_READING_CLAMPED",
+      "thermalWarpMm": 0.01244,
+      "sloshMultiplier": 1,
+      "sampleCount": 1,
+      "volumeMl": 710,
+      "volumeFlOz": 24.01
+    }
+  },
+  {
+    "name": "cold_liquid_hot_lid_extreme",
+    "input": {
+      "rawLaserDistanceMm": 60,
+      "tLiquid": -10,
+      "tLid": 80,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0.048,
+      "sloshMultiplier": 1,
+      "sampleCount": 1,
+      "volumeMl": 564.25,
+      "volumeFlOz": 19.08
+    }
+  },
+  {
+    "name": "hot_liquid_cold_lid_extreme",
+    "input": {
+      "rawLaserDistanceMm": 60,
+      "tLiquid": 90,
+      "tLid": -5,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0.1042,
+      "sloshMultiplier": 1,
+      "sampleCount": 1,
+      "volumeMl": 564.45,
+      "volumeFlOz": 19.09
+    }
+  },
+  {
+    "name": "baseline_temp_no_warp",
+    "input": {
+      "rawLaserDistanceMm": 60,
+      "tLiquid": 20,
+      "tLid": 20,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0,
+      "sloshMultiplier": 1,
+      "sampleCount": 1,
+      "volumeMl": 564.1,
+      "volumeFlOz": 19.07
+    }
+  },
+  {
+    "name": "unsettled_zero_seconds",
+    "input": {
+      "rawLaserDistanceMm": 60,
+      "tLiquid": 4,
+      "tLid": 45,
+      "secondsDelayed": 0
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0.01244,
+      "sloshMultiplier": 11,
+      "sampleCount": 1,
+      "volumeMl": 564.15,
+      "volumeFlOz": 19.08
+    }
+  },
+  {
+    "name": "unsettled_partial_seconds",
+    "input": {
+      "rawLaserDistanceMm": 60,
+      "tLiquid": 4,
+      "tLid": 45,
+      "secondsDelayed": 2.5
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0.01244,
+      "sloshMultiplier": 4.75,
+      "sampleCount": 1,
+      "volumeMl": 564.15,
+      "volumeFlOz": 19.08
+    }
+  },
+  {
+    "name": "over_settled_beyond_required",
+    "input": {
+      "rawLaserDistanceMm": 60,
+      "tLiquid": 4,
+      "tLid": 45,
+      "secondsDelayed": 10
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0.01244,
+      "sloshMultiplier": 1,
+      "sampleCount": 1,
+      "volumeMl": 564.15,
+      "volumeFlOz": 19.08
+    }
+  },
+  {
+    "name": "multi_sample_array_four",
+    "input": {
+      "rawLaserDistanceMm": [
+        49.9,
+        50.1,
+        50,
+        49.95
+      ],
+      "tLiquid": 4,
+      "tLid": 45,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0.01244,
+      "sloshMultiplier": 1,
+      "sampleCount": 4,
+      "volumeMl": 599.45,
+      "volumeFlOz": 20.27
+    }
+  },
+  {
+    "name": "multi_sample_array_single_element",
+    "input": {
+      "rawLaserDistanceMm": [
+        50
+      ],
+      "tLiquid": 4,
+      "tLid": 45,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0.01244,
+      "sloshMultiplier": 1,
+      "sampleCount": 1,
+      "volumeMl": 599.4,
+      "volumeFlOz": 20.27
+    }
+  },
+  {
+    "name": "multi_sample_array_two",
+    "input": {
+      "rawLaserDistanceMm": [
+        40,
+        60
+      ],
+      "tLiquid": 20,
+      "tLid": 20,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0,
+      "sloshMultiplier": 1,
+      "sampleCount": 2,
+      "volumeMl": 599.35,
+      "volumeFlOz": 20.27
+    }
+  },
+  {
+    "name": "invalid_non_numeric_raw_distance",
+    "input": {
+      "rawLaserDistanceMm": "not-a-number",
+      "tLiquid": 4,
+      "tLid": 45,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_INVALID_INPUT",
+      "invalidField": "rawLaserDistanceMm",
+      "thermalWarpMm": null,
+      "sloshMultiplier": null,
+      "sampleCount": null,
+      "volumeMl": null,
+      "volumeFlOz": null
+    }
+  },
+  {
+    "name": "invalid_empty_array",
+    "input": {
+      "rawLaserDistanceMm": [],
+      "tLiquid": 4,
+      "tLid": 45,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_INVALID_INPUT",
+      "invalidField": "rawLaserDistanceMm",
+      "thermalWarpMm": null,
+      "sloshMultiplier": null,
+      "sampleCount": null,
+      "volumeMl": null,
+      "volumeFlOz": null
+    }
+  },
+  {
+    "name": "invalid_array_with_non_numeric",
+    "input": {
+      "rawLaserDistanceMm": [
+        50,
+        "not-a-number",
+        49
+      ],
+      "tLiquid": 4,
+      "tLid": 45,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_INVALID_INPUT",
+      "invalidField": "rawLaserDistanceMm",
+      "thermalWarpMm": null,
+      "sloshMultiplier": null,
+      "sampleCount": null,
+      "volumeMl": null,
+      "volumeFlOz": null
+    }
+  },
+  {
+    "name": "invalid_tliquid_non_numeric",
+    "input": {
+      "rawLaserDistanceMm": 50,
+      "tLiquid": "not-a-number",
+      "tLid": 45,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_INVALID_INPUT",
+      "invalidField": "tLiquid",
+      "thermalWarpMm": null,
+      "sloshMultiplier": null,
+      "sampleCount": null,
+      "volumeMl": null,
+      "volumeFlOz": null
+    }
+  },
+  {
+    "name": "invalid_tlid_non_numeric",
+    "input": {
+      "rawLaserDistanceMm": 50,
+      "tLiquid": 4,
+      "tLid": "not-a-number",
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_INVALID_INPUT",
+      "invalidField": "tLid",
+      "thermalWarpMm": null,
+      "sloshMultiplier": null,
+      "sampleCount": null,
+      "volumeMl": null,
+      "volumeFlOz": null
+    }
+  },
+  {
+    "name": "invalid_seconds_delayed_non_numeric",
+    "input": {
+      "rawLaserDistanceMm": 50,
+      "tLiquid": 4,
+      "tLid": 45,
+      "secondsDelayed": "not-a-number"
+    },
+    "expected": {
+      "status": "HHTR_INVALID_INPUT",
+      "invalidField": "secondsDelayed",
+      "thermalWarpMm": null,
+      "sloshMultiplier": null,
+      "sampleCount": null,
+      "volumeMl": null,
+      "volumeFlOz": null
+    }
+  },
+  {
+    "name": "boundary_zero_raw_distance",
+    "input": {
+      "rawLaserDistanceMm": 0,
+      "tLiquid": 4,
+      "tLid": 45,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_READING_CLAMPED",
+      "thermalWarpMm": 0.01244,
+      "sloshMultiplier": 1,
+      "sampleCount": 1,
+      "volumeMl": 710,
+      "volumeFlOz": 24.01
+    }
+  },
+  {
+    "name": "small_positive_fluid_height",
+    "input": {
+      "rawLaserDistanceMm": 219.9,
+      "tLiquid": 20,
+      "tLid": 20,
+      "secondsDelayed": 4
+    },
+    "expected": {
+      "status": "HHTR_READING_OK",
+      "thermalWarpMm": 0,
+      "sloshMultiplier": 1,
+      "sampleCount": 1,
+      "volumeMl": 0.35,
+      "volumeFlOz": 0.01
+    }
+  }
+]

@@ -82,6 +82,11 @@ with `python accuracy_validation.py` (`run_multi_seed_validation`).
   input validation. Accepts either a single raw distance reading or an
   array of readings to average (the real fix, applied in the engine
   itself).
+- **`telemetry_volume_engine.py`** — a deliberate line-for-line Python port
+  of the JS engine above (same constants, same status strings), kept
+  separate from `simulation_reference.py`/`accuracy_validation.py` so it
+  can be checked against the JS version with shared test vectors instead
+  of just being assumed to agree.
 - **`simulation_reference.py`** — the original reference simulation,
   preserved as a three-iteration case study: an honest loop, a
   rescaled-error loop that looks like an improvement but isn't, and a
@@ -91,6 +96,13 @@ with `python accuracy_validation.py` (`run_multi_seed_validation`).
   `simulation_reference.py`'s unit-conversion report, but using real
   multi-sample averaging and judging pass/fail on unmodified error. Run it
   directly (`python accuracy_validation.py`) to reproduce the table above.
+- **`tests/test_vectors.json`** — 24 golden input/output pairs covering
+  both zones, height and capacity clamping, extreme temperatures, every
+  settlement state, multi-sample arrays, and every invalid-input path.
+  Generated from the JS engine and independently verified to match the
+  Python port exactly. Run `node tests/run_vectors.js` and
+  `python tests/run_vectors.py` — both check the same file and both
+  currently report 24/24.
 
 ## Known limitations
 
@@ -114,9 +126,14 @@ with `python accuracy_validation.py` (`run_multi_seed_validation`).
   Real ToF sensors can have correlated noise across a burst (ambient light
   drift, thermal drift during the capture window), which would erode the
   `1/sqrt(N)` gain below what's reported here.
-- No automated test suite ties `telemetry_volume_engine.js` and the Python
-  reference implementation together with shared test vectors, so the two
-  aren't currently verified to agree numerically beyond manual spot checks.
+- `telemetry_volume_engine.py` and `telemetry_volume_engine.js` agree on
+  all 24 golden vectors, but getting there required explicitly matching
+  JS's round-half-away-from-zero (`Math.round`/`toFixed`) instead of
+  Python's default round-half-to-even (`round()`) -- see
+  `_round_half_away_from_zero` in the Python port. Worth remembering for
+  a future C++ port: `std::round` also rounds half away from zero, so it
+  should agree without needing the same workaround, but that's an
+  assumption to verify with the same vectors, not take for granted.
 - `simulation_reference.py` was transcribed from a PDF export of a
   research notebook (not a raw `.ipynb`); a handful of long lines were
   clipped at the page edge in that export and are reconstructed inline
