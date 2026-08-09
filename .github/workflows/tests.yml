@@ -1,0 +1,63 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  golden-vectors:
+    name: Golden vector tests (JS, Python, C++ agree)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run JS golden vector tests
+        run: node tests/run_vectors.js
+
+      - name: Run Python golden vector tests
+        run: python3 tests/run_vectors.py
+
+      - name: Compile and run C++ golden vector tests
+        run: |
+          g++ -std=c++17 -Wall -Wextra -O2 -o run_vectors_cpp tests/run_vectors.cpp
+          ./run_vectors_cpp
+
+  simulation-and-validation-scripts:
+    name: Simulation and validation scripts run cleanly
+    runs-on: ubuntu-latest
+    env:
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run simulation_reference.py
+        run: python3 simulation_reference.py
+
+      - name: Run accuracy_validation.py
+        run: python3 accuracy_validation.py
+
+      - name: Run substrate_optimization_simulation.py
+        run: python3 substrate_optimization_simulation.py
+
+      - name: Run material_efficiency_index.py
+        run: python3 material_efficiency_index.py

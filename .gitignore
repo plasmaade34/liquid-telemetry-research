@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
 node_modules/
+output/
+run_vectors_cpp

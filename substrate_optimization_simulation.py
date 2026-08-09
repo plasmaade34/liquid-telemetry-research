@@ -128,8 +128,8 @@ def run_simulation():
     sns.despine()
     plt.tight_layout(pad=2.0)
     
-    os.makedirs('/workspace/scratch', exist_ok=True)
-    fig_path = '/workspace/scratch/substrate_optimization.png'
+    os.makedirs('output', exist_ok=True)
+    fig_path = 'output/substrate_optimization.png'
     fig.savefig(fig_path, dpi=150, bbox_inches='tight')
     plt.close()
     
