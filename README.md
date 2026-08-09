@@ -162,6 +162,48 @@ with `python accuracy_validation.py` (`run_multi_seed_validation`).
   research notebook (not a raw `.ipynb`); a handful of long lines were
   clipped at the page edge in that export and are reconstructed inline
   (marked `# [reconstructed: clipped in source]`).
+- Found by testing a case outside the 24 golden vectors, not assumed: C++
+  would silently promote a literal `true`/`false` argument to `1.0`/`0.0`
+  and process it as a normal reading, while JS's `Number.isFinite(true)`
+  and Python's explicit bool check both correctly reject it as invalid.
+  Fixed with a deleted `bool` overload in `telemetry_volume_engine.hpp`
+  that turns this into a compile error in C++ instead of a silent
+  behavior mismatch -- verified both that it now fails to compile and
+  that all 24 real vectors still pass.
+
+## Notes for students
+
+If you're using this repo to learn from rather than just to reference a
+number, here's what's actually transferable to your own sensor or
+structural-math work, in rough order of how often it'll save you:
+
+1. **Cross-sectional area amplifies height-measurement error into volume
+   error.** The same 1mm of sensor noise is a bigger problem in a wide
+   tank than a narrow one. Check what your geometry does to your sensor's
+   noise spec before trusting an accuracy number.
+2. **A single test run is not a failure rate.** One seed can look better
+   or worse than reality by chance -- this repo's own README used to say
+   "N=4: 0.00% failures" from exactly one run before 200 independent
+   trials corrected it to ~0.016%. Always ask how many trials a number
+   comes from.
+3. **Separate "the reported number improved" from "the real thing
+   improved."** Check whether a fix changes the actual measured value or
+   just the metric being compared to a threshold. `simulation_reference.py`'s
+   "Kalman filter" section is a worked example of the second, disguised as
+   the first.
+4. **Know which failure mode governs before trusting a shortcut formula.**
+   `material_efficiency_index.py` shows two materials trading the "best"
+   ranking depending on whether yield stress or buckling governs -- a
+   formula valid in one regime can be silently wrong in the other.
+5. **If you can't derive a term in an equation, don't use it yet.**
+   `STRUCTURAL_FRAMEWORK_NOTES.md` documents an entire "universal
+   coefficient" that sounded authoritative and was never actually defined
+   anywhere. Treat undefined terms as placeholders, not facts.
+6. **Cite where your input numbers actually come from**, especially
+   sensor specs. "Typical noise floor is ~0.15mm" is not a citation -- a
+   datasheet part number is. Every accuracy claim built on top inherits
+   the uncertainty of the numbers underneath it (see the noise-figure
+   caveat above, which this repo still hasn't resolved).
 
 ## How to cite this
 

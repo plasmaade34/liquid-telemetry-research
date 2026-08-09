@@ -187,4 +187,13 @@ inline TelemetryResult processTelemetryPayload(
     return processTelemetryPayload(std::vector<double>{rawLaserDistanceMm}, tLiquid, tLid, secondsDelayed);
 }
 
+// JS's Number.isFinite(true) and Python's explicit bool check both reject
+// booleans as invalid input. Without this, C++ would silently promote a
+// literal `true`/`false` argument to 1.0/0.0 via implicit conversion and
+// process it as a normal reading -- found by testing, not assumed. This
+// deleted overload is an exact match for a bool argument (beating the
+// double overload's implicit-conversion match), turning that silent
+// behavior difference into a compile error instead.
+TelemetryResult processTelemetryPayload(bool, double = 4.0, double = 45.0, double = 4.0) = delete;
+
 }  // namespace telemetry
