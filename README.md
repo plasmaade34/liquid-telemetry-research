@@ -163,6 +163,22 @@ with `python accuracy_validation.py` (`run_multi_seed_validation`).
   clipped at the page edge in that export and are reconstructed inline
   (marked `# [reconstructed: clipped in source]`).
 
+## How to cite this
+
+If this is useful to you — a formula, a number, the methodology, any of
+it — a citation back here is appreciated, though not required by the MIT
+license unless you're redistributing the code itself (see below). A
+machine-readable [`CITATION.cff`](./CITATION.cff) is included, which GitHub
+renders as a "Cite this repository" button in the sidebar.
+
+Plain-text:
+> Ade Hodgins, *Liquid Telemetry Research*, https://github.com/plasmaade34/liquid-telemetry-research (2026).
+
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+MIT — see [LICENSE](./LICENSE). Note that MIT requires keeping the license
+and copyright notice attached only if you redistribute the actual code.
+The underlying physics and formulas (Barlow's Formula, Timoshenko
+buckling, Ashby material indices) are public-domain science, usable and
+re-derivable by anyone regardless of license — citing this repo for them
+is a courtesy, not a legal requirement.

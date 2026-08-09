@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Liquid Telemetry Research"
+type: software
+authors:
+  - family-names: "Hodgins"
+    given-names: "Ade"
+repository-code: "https://github.com/plasmaade34/liquid-telemetry-research"
+url: "https://github.com/plasmaade34/liquid-telemetry-research"
+license: MIT
+date-released: 2026-08-09
+keywords:
+  - time-of-flight sensors
+  - liquid level measurement
+  - volume estimation
+  - sensor noise reduction
+  - material selection
+  - pressure vessel design
