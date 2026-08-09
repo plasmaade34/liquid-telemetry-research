@@ -96,13 +96,20 @@ with `python accuracy_validation.py` (`run_multi_seed_validation`).
   `simulation_reference.py`'s unit-conversion report, but using real
   multi-sample averaging and judging pass/fail on unmodified error. Run it
   directly (`python accuracy_validation.py`) to reproduce the table above.
+- **`telemetry_volume_engine.hpp`** — header-only C++ port of the same
+  engine. C++ is statically typed, so the "non-numeric input" invalid
+  cases in the shared vectors don't have a literal equivalent (that class
+  of error is a compile error here, not a runtime one); `NaN` is used as
+  the natural stand-in, mapped from the vectors' string sentinels by the
+  C++ test runner. See the file's header comment for the full reasoning.
 - **`tests/test_vectors.json`** — 24 golden input/output pairs covering
   both zones, height and capacity clamping, extreme temperatures, every
   settlement state, multi-sample arrays, and every invalid-input path.
-  Generated from the JS engine and independently verified to match the
-  Python port exactly. Run `node tests/run_vectors.js` and
-  `python tests/run_vectors.py` — both check the same file and both
-  currently report 24/24.
+  Generated from the JS engine and independently verified against the
+  Python and C++ ports. Run `node tests/run_vectors.js`,
+  `python tests/run_vectors.py`, and
+  `g++ -std=c++17 -O2 -o run_vectors_cpp tests/run_vectors.cpp && ./run_vectors_cpp`
+  (all from the repo root) — all three currently report 24/24.
 
 ## Known limitations
 
@@ -126,14 +133,20 @@ with `python accuracy_validation.py` (`run_multi_seed_validation`).
   Real ToF sensors can have correlated noise across a burst (ambient light
   drift, thermal drift during the capture window), which would erode the
   `1/sqrt(N)` gain below what's reported here.
-- `telemetry_volume_engine.py` and `telemetry_volume_engine.js` agree on
+- All three ports (`telemetry_volume_engine.js`, `.py`, `.hpp`) agree on
   all 24 golden vectors, but getting there required explicitly matching
-  JS's round-half-away-from-zero (`Math.round`/`toFixed`) instead of
-  Python's default round-half-to-even (`round()`) -- see
-  `_round_half_away_from_zero` in the Python port. Worth remembering for
-  a future C++ port: `std::round` also rounds half away from zero, so it
-  should agree without needing the same workaround, but that's an
-  assumption to verify with the same vectors, not take for granted.
+  JS's round-half-away-from-zero (`Math.round`/`toFixed`) in both other
+  ports, instead of Python's default round-half-to-even (`round()`) or
+  relying on `std::round`'s own tie-breaking rule in C++ (which, as it
+  happens, differs from JS `Math.round` at *negative* ties: JS rounds
+  -2.5 to -2, `std::round` rounds it to -3 -- see the header comment in
+  `telemetry_volume_engine.hpp`). All three ports now use the same
+  explicit round-half-away-from-zero helper rather than trusting each
+  language's default.
+- The C++ test runner (`tests/run_vectors.cpp`) includes a small
+  hand-written JSON parser (`tests/json_mini.hpp`) scoped only to this
+  repo's test vector format -- it's not a general-purpose library and
+  shouldn't be treated as one.
 - `simulation_reference.py` was transcribed from a PDF export of a
   research notebook (not a raw `.ipynb`); a handful of long lines were
   clipped at the page edge in that export and are reconstructed inline
