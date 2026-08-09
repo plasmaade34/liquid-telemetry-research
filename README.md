@@ -123,6 +123,11 @@ with `python accuracy_validation.py` (`run_multi_seed_validation`).
   `STRUCTURAL_FRAMEWORK_NOTES.md` for the full write-up, including what
   this replaced (an undefined "universal" coefficient from an earlier
   draft) and where the indices do and don't apply.
+- **`RELATED_WORK.md`** — real, independently verified prior art and
+  foundational work this project draws on or generalizes toward
+  (aircraft fuel sensing, volumetric metrology standards, materials
+  selection methodology) -- credited honestly, without claiming to
+  implement, surpass, or be affiliated with any of it.
 
 ## Known limitations
 
