@@ -1,7 +1,5 @@
 # Liquid Telemetry Research
 
-> my AI project grew a mind of its own and I think it's actually accurate? I think it broke my brain......
-
 Open research on thermal-compensated volume estimation from a time-of-flight
 (ToF) laser liquid-level sensor, published by **Hodgins Holdings**.
 
