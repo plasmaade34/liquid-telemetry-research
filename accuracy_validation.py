@@ -218,12 +218,14 @@ def run_multi_seed_validation(n_samples, num_trials=200, sips_per_trial=1000,
     }
 
 
-def run_iso_flight_certification_loop(sip_list, n_samples=SAMPLES_PER_READING, settlement_time=4.0,
-                                       t_liq=4.0, t_ld=45.0, make_plot=True, plot_path=None):
+def run_iso_unit_reporting_loop(sip_list, n_samples=SAMPLES_PER_READING, settlement_time=4.0,
+                                 t_liq=4.0, t_ld=45.0, make_plot=True, plot_path=None):
     """
     Real-fix replacement for run_flight_certification_loop() in
-    simulation_reference.py. Same mL + fl oz reporting shape, and the same
-    pass/fail target (TARGET_RELIABILITY), but:
+    simulation_reference.py (renamed here -- this is a handheld-bottle QA
+    loop, not an aviation certification procedure, despite the name it
+    inherited from that source material). Same mL + fl oz reporting shape,
+    and the same pass/fail target (TARGET_RELIABILITY), but:
       - uses N-sample laser averaging (the actual noise fix) instead of a
         single noisy reading
       - never rescales the reported error -- pass/fail is judged on the
@@ -370,7 +372,7 @@ def main():
 
     print()
     random.seed(42)
-    run_iso_flight_certification_loop(simulated_sips_ml, n_samples=SAMPLES_PER_READING)
+    run_iso_unit_reporting_loop(simulated_sips_ml, n_samples=SAMPLES_PER_READING)
 
 
 if __name__ == "__main__":

@@ -20,24 +20,31 @@ def run_simulation():
     pressures_atm = np.linspace(0.1, 10.0, 100)
     pressures_pa = pressures_atm * ATM_TO_PA
     
-    # Material properties
-    # Sources: 304 Stainless Steel [1, 18], Aluminum 6061-T6 [18], Titanium Grade 5 (standard aerospace grade)
+    # Material properties: standard published values for these named alloys
+    # (consistent with typical manufacturer datasheets and references like
+    # MatWeb and Ashby's Materials Selection in Mechanical Design -- see
+    # RELATED_WORK.md). Real material properties vary somewhat by temper,
+    # supplier, and lot; these are commonly-cited representative values,
+    # not a single universal constant. Ti-6Al-4V yield strength in
+    # particular ranges ~827-950 MPa across sources depending on exact
+    # annealed condition -- 880 MPa here is a typical mid-range value, not
+    # a minimum-guaranteed spec.
     materials = {
         '304 Stainless Steel': {
-            'density': 8000.0,      # kg/m^3 (8.0 g/cm^3) [18]
+            'density': 8000.0,      # kg/m^3 (8.0 g/cm^3)
             'yield_strength': 2.15e8, # Pa (215 MPa)
             'youngs_modulus': 1.93e11, # Pa (193 GPa)
             'poisson_ratio': 0.29
         },
         '6061-T6 Aluminum': {
-            'density': 2700.0,      # kg/m^3 (2.7 g/cm^3) [18]
+            'density': 2700.0,      # kg/m^3 (2.7 g/cm^3)
             'yield_strength': 2.76e8, # Pa (276 MPa)
             'youngs_modulus': 6.89e10, # Pa (68.9 GPa)
             'poisson_ratio': 0.33
         },
         'Titanium Grade 5': {
             'density': 4430.0,      # kg/m^3 (4.43 g/cm^3)
-            'yield_strength': 8.80e8, # Pa (880 MPa)
+            'yield_strength': 8.80e8, # Pa (880 MPa, typical annealed)
             'youngs_modulus': 1.14e11, # Pa (114 GPa)
             'poisson_ratio': 0.34
         }
@@ -80,8 +87,13 @@ def run_simulation():
     # Create Side-by-Side Comparison plots
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
     
-    # Title-as-takeaway (MANDATORY per data-craft)
-    fig.suptitle('Titanium Grade 5 Reduces Vessel Mass by 35% vs. Stainless Steel While Remaining 15% Thinner Than Aluminum', 
+    # Title-as-takeaway (MANDATORY per data-craft). Titanium needs the
+    # thinnest wall of the three, but that does NOT mean it has the lowest
+    # mass -- Aluminum's much lower density wins on mass despite its
+    # thicker wall (see STRUCTURAL_FRAMEWORK_NOTES.md for the full
+    # comparison and why a single headline number here would be
+    # misleading).
+    fig.suptitle('At 10 atm: Titanium Needs the Thinnest Wall, but Aluminum Has the Lowest Mass',
                  fontsize=14, fontweight='bold', y=0.98)
     
     # Palette choice: colorblind
