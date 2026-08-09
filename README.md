@@ -1,5 +1,7 @@
 # Liquid Telemetry Research
 
+[![Tests](https://github.com/plasmaade34/liquid-telemetry-research/actions/workflows/tests.yml/badge.svg)](https://github.com/plasmaade34/liquid-telemetry-research/actions/workflows/tests.yml)
+
 Open research on thermal-compensated volume estimation from a time-of-flight
 (ToF) laser liquid-level sensor, published by **Hodgins Holdings**.
 
