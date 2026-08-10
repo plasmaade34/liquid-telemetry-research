@@ -128,6 +128,9 @@ with `python accuracy_validation.py` (`run_multi_seed_validation`).
   (aircraft fuel sensing, volumetric metrology standards, materials
   selection methodology) -- credited honestly, without claiming to
   implement, surpass, or be affiliated with any of it.
+- **`CONTRIBUTING.md`** — the standard for contributions: source your
+  formulas and constants, show how any number was computed, and don't
+  patch `simulation_reference.py`'s intentional flaws.
 
 ## Known limitations
 
