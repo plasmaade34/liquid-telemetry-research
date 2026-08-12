@@ -1,6 +1,8 @@
 # Liquid Telemetry Research
 
 [![Tests](https://github.com/plasmaade34/liquid-telemetry-research/actions/workflows/tests.yml/badge.svg)](https://github.com/plasmaade34/liquid-telemetry-research/actions/workflows/tests.yml)
+[![Claude](https://img.shields.io/badge/Claude-D97757?logo=claude&logoColor=fff)](https://claude.com)
+[![Google Gemini](https://img.shields.io/badge/Google%20Gemini-886FBF?logo=googlegemini&logoColor=fff)](https://gemini.google.com)
 
 Open research on thermal-compensated volume estimation from a time-of-flight
 (ToF) laser liquid-level sensor, published by **Hodgins Holdings**.
@@ -225,6 +227,24 @@ renders as a "Cite this repository" button in the sidebar.
 
 Plain-text:
 > Ade Hodgins, *Liquid Telemetry Research*, https://github.com/plasmaade34/liquid-telemetry-research (2026).
+
+## AI-assisted development
+
+Both named plainly, by what each actually did, not as a blanket credit:
+
+- **Google Gemini** — drafting and ideation on earlier iterations of this
+  project's structural-engineering framing (see
+  `STRUCTURAL_FRAMEWORK_NOTES.md` for exactly what that covered, including
+  the parts that didn't hold up and were corrected).
+- **Claude (Anthropic)** — implementation of the three-language engine
+  ports, the golden-vector test suite, the multi-seed statistical
+  validation, the C++ bool-coercion and rounding-tie bugs found by active
+  testing, and the sourcing/citation audit that produced
+  `RELATED_WORK.md` and this credit section itself.
+
+Neither is a substitute for the human engineering judgment and decisions
+(what to keep, what to fix, what to leave out until a real patent
+attorney weighs in) that sit above both of them throughout this repo.
 
 ## License
 
