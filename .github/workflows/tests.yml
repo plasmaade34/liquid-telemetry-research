@@ -64,3 +64,6 @@ jobs:
 
       - name: Run unit_conversion.py tests
         run: python3 test_unit_conversion.py
+
+      - name: Run vacuum_wall_example.py
+        run: python3 vacuum_wall_example.py

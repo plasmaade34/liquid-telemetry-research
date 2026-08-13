@@ -141,6 +141,13 @@ with `python accuracy_validation.py` (`run_multi_seed_validation`).
   `test_unit_conversion.py` against independently-verifiable reference
   values (water's freeze/boil points, the standard atmosphere, exact
   unit definitions), run in CI on every push.
+- **`vacuum_wall_example.py`** — a CAD-realistic worked example tying
+  `unit_conversion.py` and the Barlow/Timoshenko formulas together: sizes
+  the inner wall of a vacuum-insulated double-wall bottle against the
+  real product's body radius (33.5 mm) under 1 standard atmosphere of
+  external differential pressure. Its output is a prediction, not a
+  verified result -- see `SOLIDWORKS_VERIFICATION.md` for the steps to
+  independently check it in CAD/FEA, which nobody has done yet.
 
 ## Known limitations
 
