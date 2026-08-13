@@ -64,3 +64,21 @@ def registry_base_unit_name(dimensions: tuple, registry: dict = REGISTRY) -> str
         if u["dimensions"] == dimensions and u["scale"] == 1.0 and u["offset"] == 0.0:
             return unit_id
     raise ValueError(f"No canonical base unit registered for dimensions {dimensions}")
+
+
+if __name__ == "__main__":
+    import json
+
+    print("Pressure: 150 psi -> bar =", round(convert(150.0, "psi", "bar"), 2))
+    print("Pressure: 1 standard atmosphere (101325 Pa) -> psi =", round(convert(101325.0, "pascal", "psi"), 2))
+    print("Temperature: 32 F -> celsius (water freezes) =", round(convert(32.0, "fahrenheit", "celsius"), 2))
+    print("Temperature: 212 F -> celsius (water boils) =", round(convert(212.0, "fahrenheit", "celsius"), 2))
+    print()
+    print("Full response shape for 100 psi -> bar:")
+    print(json.dumps(convert_response(100.0, "psi", "bar"), indent=2))
+    print()
+    print("Dimension guard rejects incompatible units:")
+    try:
+        convert(1.0, "psi", "fahrenheit")
+    except ValueError as e:
+        print(" ", e)
