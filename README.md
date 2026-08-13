@@ -133,6 +133,14 @@ with `python accuracy_validation.py` (`run_multi_seed_validation`).
 - **`CONTRIBUTING.md`** — the standard for contributions: source your
   formulas and constants, show how any number was computed, and don't
   patch `simulation_reference.py`'s intentional flaws.
+- **`unit_conversion.py`** — general-purpose engineering unit conversion
+  (pressure and temperature units so far) via canonical SI-base
+  normalization, so adding a new unit only needs one definition instead
+  of a direct formula to every other unit. Not specific to the telemetry
+  or structural work above; a standalone utility. Tested in
+  `test_unit_conversion.py` against independently-verifiable reference
+  values (water's freeze/boil points, the standard atmosphere, exact
+  unit definitions), run in CI on every push.
 
 ## Known limitations
 

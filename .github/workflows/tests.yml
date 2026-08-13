@@ -61,3 +61,6 @@ jobs:
 
       - name: Run material_efficiency_index.py
         run: python3 material_efficiency_index.py
+
+      - name: Run unit_conversion.py tests
+        run: python3 test_unit_conversion.py
