@@ -263,9 +263,19 @@ attorney weighs in) that sit above both of them throughout this repo.
 
 ## License
 
-MIT — see [LICENSE](./LICENSE). Note that MIT requires keeping the license
-and copyright notice attached only if you redistribute the actual code.
-The underlying physics and formulas (Barlow's Formula, Timoshenko
-buckling, Ashby material indices) are public-domain science, usable and
-re-derivable by anyone regardless of license — citing this repo for them
-is a courtesy, not a legal requirement.
+**Split by date, not by file — see [NOTICE.md](./NOTICE.md) for the full
+explanation.** Everything up to and including commit `dceda4b` (all of
+the telemetry engine, tests, structural toolkit, `unit_conversion.py`,
+and `vacuum_wall_example.py`) is MIT — see [LICENSE](./LICENSE) — and
+stays MIT permanently for anyone who already has it; that doesn't change.
+New work committed after that point is licensed under
+[AGPLv3](./LICENSE-AGPL-3.0.txt) — free for research, students, and
+non-commercial use, with a separate commercial license available for
+closed commercial use.
+
+MIT requires keeping the license and copyright notice attached only if
+you redistribute the actual code. The underlying physics and formulas
+(Barlow's Formula, Timoshenko buckling, Ashby material indices) are
+public-domain science, usable and re-derivable by anyone regardless of
+license — citing this repo for them is a courtesy, not a legal
+requirement.
