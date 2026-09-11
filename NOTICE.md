@@ -24,7 +24,8 @@ In practice, this means: new work can be used and studied freely by
 anyone, including for commercial purposes -- but if you use it (including
 running it as a network service) without releasing your own source code
 under AGPLv3, you need a separate commercial license instead. Contact
-Ade Hodgins to discuss commercial licensing terms for AGPLv3-covered code.
+Ade Hodgins at adehodgins@hodginsholdings.com to discuss commercial
+licensing terms for AGPLv3-covered code.
 
 ## Why the split
 
