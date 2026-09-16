@@ -29,15 +29,15 @@ from exactly one such draw, which overstated the case. Aggregating 200
 independent trials (200,000 total readings per N) gives a real answer:
 
     N | mean failure rate | worst single trial | 95% upper bound
-    1 |            5.268% |              7.90%  |           5.37%
-    2 |            0.663% |              1.30%  |           0.70%
+    1 |            5.238% |              7.90%  |           5.34%
+    2 |            0.654% |              1.40%  |           0.69%
     3 |            0.094% |              0.60%  |           0.11%
-    4 |            0.016% |              0.20%  |           0.023%
-    5 |            0.004% |              0.10%  |           0.007%
+    4 |            0.013% |              0.20%  |           0.019%
+    5 |            0.003% |              0.10%  |           0.007%
 
 Two corrections to the earlier single-seed claim: N=4's true rate is
-~0.016%, not a literal 0% -- comfortably under the 1% target, but not
-exactly zero. And N=2's worst observed trial (1.30%) actually breaches the
+~0.013%, not a literal 0% -- comfortably under the 1% target, but not
+exactly zero. And N=2's worst observed trial (1.40%) actually breaches the
 1% target, so N=2 does not reliably meet the reliability goal the way a
 single lucky 0.90% draw suggested. N=4 is used below because it holds a
 consistent margin under 1% across all 200 trials tested, not because of

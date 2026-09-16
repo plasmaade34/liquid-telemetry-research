@@ -66,15 +66,15 @@ error the whole time:
 
 | Samples averaged (N) | Mean failure rate | Worst single trial | 95% upper bound |
 |---|---|---|---|
-| 1 | 5.268% | 7.90% | 5.37% |
-| 2 | 0.663% | **1.30%** | 0.70% |
+| 1 | 5.238% | 7.90% | 5.34% |
+| 2 | 0.654% | **1.40%** | 0.69% |
 | 3 | 0.094% | 0.60% | 0.11% |
-| 4 | 0.016% | 0.20% | 0.023% |
-| 5 | 0.004% | 0.10% | 0.007% |
+| 4 | 0.013% | 0.20% | 0.019% |
+| 5 | 0.003% | 0.10% | 0.007% |
 
 `N=4` is used throughout because it holds a consistent margin under the 1%
 target across all 200 trials tested -- not because a single run happened
-to show zero failures. `N=2`'s worst observed trial (1.30%) actually
+to show zero failures. `N=2`'s worst observed trial (1.40%) actually
 breaches the 1% reliability target, so it does not reliably meet the goal
 the way a single lucky 0.90%-failure draw would suggest. Reproduce this
 with `python accuracy_validation.py` (`run_multi_seed_validation`).
@@ -211,7 +211,7 @@ structural-math work, in rough order of how often it'll save you:
 2. **A single test run is not a failure rate.** One seed can look better
    or worse than reality by chance -- this repo's own README used to say
    "N=4: 0.00% failures" from exactly one run before 200 independent
-   trials corrected it to ~0.016%. Always ask how many trials a number
+   trials corrected it to ~0.013%. Always ask how many trials a number
    comes from.
 3. **Separate "the reported number improved" from "the real thing
    improved."** Check whether a fix changes the actual measured value or
