@@ -10,7 +10,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from telemetry_volume_engine import process_telemetry_payload
+from telemetry_volume_engine import process_batch_telemetry, process_telemetry_payload
 
 VECTORS_PATH = os.path.join(os.path.dirname(__file__), "test_vectors.json")
 
@@ -34,7 +34,34 @@ def main():
             print(f"  expected: {expected}")
             print(f"  actual:   {actual}")
 
-    print(f"\n{len(vectors) - failures}/{len(vectors)} vectors match")
+    default_args_expected = next(v["expected"] for v in vectors if v["name"] == "default_args_only")
+    invalid_expected = {
+        "status": "HHTR_INVALID_INPUT",
+        "invalidField": "rawLaserDistanceMm",
+        "thermalWarpMm": None,
+        "sloshMultiplier": None,
+        "sampleCount": None,
+        "volumeMl": None,
+        "volumeFlOz": None,
+    }
+    batch_cases = [
+        (
+            "batch_handles_malformed_items",
+            [{"rawLaserDistanceMm": 50}, None, 7, ["bad"]],
+            [default_args_expected, invalid_expected, invalid_expected, invalid_expected],
+        ),
+        ("batch_handles_non_list_input", None, [invalid_expected]),
+    ]
+    for name, payloads, expected in batch_cases:
+        actual = process_batch_telemetry(payloads)
+        if actual != expected:
+            failures += 1
+            print(f"MISMATCH [{name}]")
+            print(f"  expected: {expected}")
+            print(f"  actual:   {actual}")
+
+    total_cases = len(vectors) + len(batch_cases)
+    print(f"\n{total_cases - failures}/{total_cases} vectors match")
     sys.exit(0 if failures == 0 else 1)
 
 

@@ -143,7 +143,11 @@ function processTelemetryPayload(rawLaserDistanceMm, tLiquid = 4.0, tLid = 45.0,
 }
 
 async function processBatchTelemetry(payloads) {
-  return Promise.all(payloads.map(p => {
+  const batch = Array.isArray(payloads) ? payloads : [null];
+  return Promise.all(batch.map(p => {
+    if (!p || typeof p !== 'object' || Array.isArray(p)) {
+      return processTelemetryPayload(undefined);
+    }
     return processTelemetryPayload(p.rawLaserDistanceMm, p.tLiquid, p.tLid, p.secondsDelayed);
   }));
 }

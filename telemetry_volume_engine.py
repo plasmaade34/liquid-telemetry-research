@@ -8,10 +8,10 @@ shared golden test vectors (see tests/) without the comparison being
 muddied by incidental implementation differences.
 
 One deliberate deviation: Python's built-in round() uses round-half-to-even
-("banker's rounding"), while JS's Math.round()/toFixed() round half away
-from zero. All values here are non-negative except thermalWarpMm, so
-_round_half_away_from_zero() is used everywhere a JS engine .toFixed()-
-or Math.round()-style rounding needs to be reproduced exactly.
+("banker's rounding"), while this engine needs JS-compatible rounding:
+Number.toFixed() for decimal fields, plus Math.round() on non-negative
+values for the 0.05 mL quantization step. _round_half_away_from_zero()
+matches those reachable cases exactly.
 """
 
 import math
@@ -31,8 +31,8 @@ METROLOGY_CONSTANTS = {
 
 
 def _round_half_away_from_zero(x, decimals):
-    """Mirrors JS Math.round()/Number.toFixed() rounding (half away from
-    zero), unlike Python's round() (half to even)."""
+    """Mirrors the JS rounding this engine actually uses: Number.toFixed()
+    and Math.round() on non-negative values."""
     factor = 10 ** decimals
     sign = -1.0 if x < 0 else 1.0
     return sign * math.floor(abs(x) * factor + 0.5) / factor
@@ -151,9 +151,20 @@ def process_telemetry_payload(raw_laser_distance_mm, t_liquid=4.0, t_lid=45.0, s
 
 
 def process_batch_telemetry(payloads):
-    return [
-        process_telemetry_payload(
-            p.get("rawLaserDistanceMm"), p.get("tLiquid", 4.0), p.get("tLid", 45.0), p.get("secondsDelayed", 4.0)
+    if not isinstance(payloads, (list, tuple)):
+        return [process_telemetry_payload(None)]
+
+    def unpack_payload(payload):
+        if not isinstance(payload, dict):
+            return None, 4.0, 45.0, 4.0
+        return (
+            payload.get("rawLaserDistanceMm"),
+            payload.get("tLiquid", 4.0),
+            payload.get("tLid", 45.0),
+            payload.get("secondsDelayed", 4.0),
         )
-        for p in payloads
+
+    return [
+        process_telemetry_payload(raw_laser_distance_mm, t_liquid, t_lid, seconds_delayed)
+        for raw_laser_distance_mm, t_liquid, t_lid, seconds_delayed in (unpack_payload(p) for p in payloads)
     ]

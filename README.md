@@ -173,14 +173,14 @@ with `python accuracy_validation.py` (`run_multi_seed_validation`).
   `1/sqrt(N)` gain below what's reported here.
 - All three ports (`telemetry_volume_engine.js`, `.py`, `.hpp`) agree on
   all 24 golden vectors, but getting there required explicitly matching
-  JS's round-half-away-from-zero (`Math.round`/`toFixed`) in both other
-  ports, instead of Python's default round-half-to-even (`round()`) or
-  relying on `std::round`'s own tie-breaking rule in C++ (which, as it
-  happens, differs from JS `Math.round` at *negative* ties: JS rounds
-  -2.5 to -2, `std::round` rounds it to -3 -- see the header comment in
-  `telemetry_volume_engine.hpp`). All three ports now use the same
-  explicit round-half-away-from-zero helper rather than trusting each
-  language's default.
+  the JS rounding this engine actually uses: `Math.round` on
+  non-negative values for the 0.05 mL quantization step, and
+  `Number.toFixed()` for decimal fields, instead of Python's default
+  round-half-to-even (`round()`) or relying on `std::round` in C++.
+  The negative-tie edge case is specifically about `toFixed()` /
+  decimal-field rounding (for example `-0.000005 -> -0.00001`), not a
+  claim that `Math.round()` and `toFixed()` behave identically for all
+  negative half-ties.
 - The C++ test runner (`tests/run_vectors.cpp`) includes a small
   hand-written JSON parser (`tests/json_mini.hpp`) scoped only to this
   repo's test vector format -- it's not a general-purpose library and

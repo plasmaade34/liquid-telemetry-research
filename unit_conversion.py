@@ -29,8 +29,8 @@ DIMENSION_LABELS = {
 
 
 def convert(value: float, from_unit: str, to_unit: str, registry: dict = REGISTRY) -> float:
-    u1 = registry[from_unit]
-    u2 = registry[to_unit]
+    u1 = get_registered_unit(from_unit, registry)
+    u2 = get_registered_unit(to_unit, registry)
 
     if u1["dimensions"] != u2["dimensions"]:
         raise ValueError(f"Cannot convert incompatible dimensions: {from_unit} -> {to_unit}")
@@ -45,8 +45,8 @@ def convert_response(value: float, from_unit: str, to_unit: str, precision: int 
     precision actually applied, and the canonical SI value included) --
     convert() itself doesn't round, so this is what a caller should use
     if it wants the response schema shown in the API examples."""
-    u1 = registry[from_unit]
-    u2 = registry[to_unit]
+    u1 = get_registered_unit(from_unit, registry)
+    u2 = get_registered_unit(to_unit, registry)
     canonical_value = (value * u1["scale"]) + u1["offset"]
     output_value = convert(value, from_unit, to_unit, registry)
 
@@ -64,6 +64,13 @@ def registry_base_unit_name(dimensions: tuple, registry: dict = REGISTRY) -> str
         if u["dimensions"] == dimensions and u["scale"] == 1.0 and u["offset"] == 0.0:
             return unit_id
     raise ValueError(f"No canonical base unit registered for dimensions {dimensions}")
+
+
+def get_registered_unit(unit_id: str, registry: dict = REGISTRY) -> dict:
+    try:
+        return registry[unit_id]
+    except KeyError as exc:
+        raise ValueError(f"Unknown unit: {unit_id}") from exc
 
 
 if __name__ == "__main__":

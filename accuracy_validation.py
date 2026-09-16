@@ -105,8 +105,16 @@ def calculate_step_cylinder_volume(raw_laser_distance_mm, structural_warp_mm):
 
 
 def apply_thousandth_protocol(integrated_volume_mm3):
-    quantized_ml = np.round(integrated_volume_mm3 / 1000.0, 1)
+    """Match telemetry_volume_engine.py's nearest-0.05 mL rounding."""
+    raw_ml = integrated_volume_mm3 / 1000.0
+    quantized_ml = round_half_away_from_zero(raw_ml * 20.0, 0) / 20.0
     return min(quantized_ml, MAX_CAPACITY_ML)
+
+
+def round_half_away_from_zero(x, decimals):
+    factor = 10 ** decimals
+    sign = -1.0 if x < 0 else 1.0
+    return sign * math.floor(abs(x) * factor + 0.5) / factor
 
 
 def true_height_from_volume_ml(volume_ml):
