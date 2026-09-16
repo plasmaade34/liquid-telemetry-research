@@ -66,15 +66,15 @@ error the whole time:
 
 | Samples averaged (N) | Mean failure rate | Worst single trial | 95% upper bound |
 |---|---|---|---|
-| 1 | 5.268% | 7.90% | 5.37% |
-| 2 | 0.663% | **1.30%** | 0.70% |
+| 1 | 5.238% | 7.90% | 5.34% |
+| 2 | 0.654% | **1.40%** | 0.69% |
 | 3 | 0.094% | 0.60% | 0.11% |
-| 4 | 0.016% | 0.20% | 0.023% |
-| 5 | 0.004% | 0.10% | 0.007% |
+| 4 | 0.013% | 0.20% | 0.019% |
+| 5 | 0.003% | 0.10% | 0.007% |
 
 `N=4` is used throughout because it holds a consistent margin under the 1%
 target across all 200 trials tested -- not because a single run happened
-to show zero failures. `N=2`'s worst observed trial (1.30%) actually
+to show zero failures. `N=2`'s worst observed trial (1.40%) actually
 breaches the 1% reliability target, so it does not reliably meet the goal
 the way a single lucky 0.90%-failure draw would suggest. Reproduce this
 with `python accuracy_validation.py` (`run_multi_seed_validation`).
@@ -173,14 +173,14 @@ with `python accuracy_validation.py` (`run_multi_seed_validation`).
   `1/sqrt(N)` gain below what's reported here.
 - All three ports (`telemetry_volume_engine.js`, `.py`, `.hpp`) agree on
   all 24 golden vectors, but getting there required explicitly matching
-  JS's round-half-away-from-zero (`Math.round`/`toFixed`) in both other
-  ports, instead of Python's default round-half-to-even (`round()`) or
-  relying on `std::round`'s own tie-breaking rule in C++ (which, as it
-  happens, differs from JS `Math.round` at *negative* ties: JS rounds
-  -2.5 to -2, `std::round` rounds it to -3 -- see the header comment in
-  `telemetry_volume_engine.hpp`). All three ports now use the same
-  explicit round-half-away-from-zero helper rather than trusting each
-  language's default.
+  the JS rounding this engine actually uses: `Math.round` on
+  non-negative values for the 0.05 mL quantization step, and
+  `Number.toFixed()` for decimal fields, instead of Python's default
+  round-half-to-even (`round()`) or relying on `std::round` in C++.
+  The negative-tie edge case is specifically about `toFixed()` /
+  decimal-field rounding (for example `-0.000005 -> -0.00001`), not a
+  claim that `Math.round()` and `toFixed()` behave identically for all
+  negative half-ties.
 - The C++ test runner (`tests/run_vectors.cpp`) includes a small
   hand-written JSON parser (`tests/json_mini.hpp`) scoped only to this
   repo's test vector format -- it's not a general-purpose library and
@@ -211,7 +211,7 @@ structural-math work, in rough order of how often it'll save you:
 2. **A single test run is not a failure rate.** One seed can look better
    or worse than reality by chance -- this repo's own README used to say
    "N=4: 0.00% failures" from exactly one run before 200 independent
-   trials corrected it to ~0.016%. Always ask how many trials a number
+   trials corrected it to ~0.013%. Always ask how many trials a number
    comes from.
 3. **Separate "the reported number improved" from "the real thing
    improved."** Check whether a fix changes the actual measured value or

@@ -43,6 +43,25 @@ except ValueError:
     print("PASS: dimension guard correctly rejects psi -> fahrenheit")
     PASS += 1
 
+# Unknown units: must raise a clear ValueError instead of a raw KeyError
+try:
+    convert(1.0, "not-a-unit", "bar")
+    print("FAIL: unknown from-unit did not raise")
+    FAIL += 1
+except ValueError as e:
+    assert str(e) == "Unknown unit: not-a-unit", f"wrong error message: {e}"
+    print("PASS: unknown from-unit correctly raises ValueError")
+    PASS += 1
+
+try:
+    convert_response(1.0, "psi", "still-not-a-unit")
+    print("FAIL: unknown to-unit did not raise in convert_response")
+    FAIL += 1
+except ValueError as e:
+    assert str(e) == "Unknown unit: still-not-a-unit", f"wrong error message: {e}"
+    print("PASS: unknown to-unit correctly raises ValueError in convert_response")
+    PASS += 1
+
 # Full response shape, matching the example API output
 resp = convert_response(100.0, "psi", "bar", precision=2)
 check("response output.value", resp["output"]["value"], 6.89)

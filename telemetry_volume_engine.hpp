@@ -48,13 +48,11 @@ struct TelemetryResult {
     std::optional<double> volumeFlOz;
 };
 
-// Mirrors JS Math.round()/toFixed() and the Python port's
-// _round_half_away_from_zero: half-way values round away from zero. Note
-// this is NOT quite the same as JS's Math.round() for negative numbers
-// (JS rounds negative .5 toward +Infinity, i.e. -2.5 -> -2, not -3) --
-// but every value rounded in this engine is non-negative except
-// thermalWarpMm, where an exact tie at the 5th decimal is not something
-// any of the shared test vectors exercise. Matches all 24 golden vectors.
+// Mirrors the JS rounding this engine actually uses: Number.toFixed() for
+// decimal fields, plus Math.round() on non-negative values for the 0.05 mL
+// quantization step. Unlike std::round, this also matches JS toFixed() on
+// negative half-ties (e.g. -0.000005 -> -0.00001). Matches all 24 golden
+// vectors.
 inline double roundHalfAwayFromZero(double x, int decimals) {
     double factor = std::pow(10.0, decimals);
     double sign = x < 0 ? -1.0 : 1.0;

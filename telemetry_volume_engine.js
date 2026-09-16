@@ -93,8 +93,8 @@ function findInvalidTelemetryField(rawLaserDistanceMm, tLiquid, tLid, secondsDel
 // Real ToF laser sensors reduce single-shot noise by averaging multiple raw
 // readings per event ("burst sampling") -- see accuracy_validation.py
 // (run_multi_seed_validation) for the measured effect over 200 independent
-// trials: a single reading (N=1) fails a 1.0 mL/99% target at a 5.27% mean
-// rate, dropping to a 0.016% mean rate at N=4 (worst observed trial across
+// trials: a single reading (N=1) fails a 1.0 mL/99% target at a 5.24% mean
+// rate, dropping to a 0.013% mean rate at N=4 (worst observed trial across
 // all 200: 0.20%). Accepts either a single reading (unchanged behavior) or
 // an array of raw readings to average.
 function averageRawLaserDistance(rawLaserDistanceMm) {
@@ -143,7 +143,11 @@ function processTelemetryPayload(rawLaserDistanceMm, tLiquid = 4.0, tLid = 45.0,
 }
 
 async function processBatchTelemetry(payloads) {
-  return Promise.all(payloads.map(p => {
+  const batch = Array.isArray(payloads) ? payloads : [null];
+  return Promise.all(batch.map(p => {
+    if (!p || typeof p !== 'object' || Array.isArray(p)) {
+      return processTelemetryPayload(undefined);
+    }
     return processTelemetryPayload(p.rawLaserDistanceMm, p.tLiquid, p.tLid, p.secondsDelayed);
   }));
 }
