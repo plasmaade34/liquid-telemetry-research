@@ -67,3 +67,6 @@ jobs:
 
       - name: Run vacuum_wall_example.py
         run: python3 vacuum_wall_example.py
+
+      - name: Run stress_force-Gs notebook tests
+        run: python3 test_stress_force_gs.py
