@@ -235,8 +235,8 @@ structural-math work, in rough order of how often it'll save you:
 ## How to cite this
 
 If this is useful to you — a formula, a number, the methodology, any of
-it — a citation back here is appreciated, though not required by the MIT
-license unless you're redistributing the code itself (see below). A
+it — a citation back here is appreciated. For licence terms, see the
+License section below. A
 machine-readable [`CITATION.cff`](./CITATION.cff) is included, which GitHub
 renders as a "Cite this repository" button in the sidebar.
 
@@ -268,10 +268,10 @@ explanation.** Everything up to and including commit `dceda4b` (all of
 the telemetry engine, tests, structural toolkit, `unit_conversion.py`,
 and `vacuum_wall_example.py`) is MIT — see [LICENSE](./LICENSE) — and
 stays MIT permanently for anyone who already has it; that doesn't change.
-New work committed after that point is licensed under
-[AGPLv3](./LICENSE-AGPL-3.0.txt) — free for research, students, and
-non-commercial use, with a separate commercial license available for
-closed commercial use.
+Work committed after that point, up to and including commit `302e0af`
+(October 21, 2026), is licensed under [AGPLv3](./LICENSE-AGPL-3.0.txt).
+Everything committed after `302e0af` is **all rights reserved**; a
+commercial licence is available on separate terms.
 
 MIT requires keeping the license and copyright notice attached only if
 you redistribute the actual code. The underlying physics and formulas
